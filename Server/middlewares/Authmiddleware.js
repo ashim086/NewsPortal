@@ -3,20 +3,18 @@ import customError from "../util/customError.js";
 
 export function AuthMiddleware(req, res, next) {
 
-    const token = req.headers.authorization
+    const authHeader = req.headers.authorization
 
-    console.log(token)
-
-    if (!token) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
 
         const err = new customError("Authentication error,token not found login again", 401);
         next(err);
-
+        console.log(err)
     }
-    
+
     else {
 
-        const authHeader = token.split(" ")[1];
+        const token = authHeader.split(" ")[1];
 
         jsonwebtoken.verify(token, process.env.PRIVATE_KEY, (err, decode) => {
 
@@ -29,7 +27,8 @@ export function AuthMiddleware(req, res, next) {
             }
             else {
 
-                console.log(err)
+                console.error("JWT Error:", err.message);
+                return next(new customError("Invalid or expired token", 401));
             }
         })
     }

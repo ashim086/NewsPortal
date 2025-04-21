@@ -16,6 +16,7 @@ export function GetAllViewers(req, res) {
 }
 
 export function GetAllJournalists(req, res) {
+    
     UserModel.find({ role: "journalist" })
         .then((users) => {
             if (users.length > 0) {

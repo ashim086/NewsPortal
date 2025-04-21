@@ -15,16 +15,19 @@ export default function AdminPanel() {
     //fetch users
     useEffect(() => {
 
+        const token = localStorage.getItem("token");
+
         fetch("http://localhost:4040/api/admin/Users", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-            }
+                Authorization: `Bearer ${token}`
+            },
         })
             .then((response) => response.json())
             .then((Users) => {
                 console.log(Users)
-
+                console.log(token)
                 setUsers(Users)
                 if (Users.success === true) {
                     toast.success(Users.message)
