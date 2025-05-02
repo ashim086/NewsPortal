@@ -8,20 +8,49 @@ import Authorization from './Pages/Authorization.jsx'
 import { ToastContainer } from 'react-toastify'
 import CreatePost from './Pages/Journalist/CreatePost.jsx'
 import AdminPanel from './Pages/Admin/AdminPanel.jsx'
+import AuthorizationGuard from './auth/RouteProtector.jsx'
+import NewsController from './Pages/Admin/NewsController.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ToastContainer />
       <Routes>
-        <Route path='/HomePage' element={<HomePage />} />
-        <Route path='/news/:id' element={<SingleNews />} />
 
+        {/* Public routes */}
         <Route path='/' element={<Authorization />} />
+        <Route path='/homepage/news/:newsID' element={<SingleNews />} />
 
-        <Route path='/AdminPanel' element={<AdminPanel />} />
+        {/* Protected routes */}
+        <Route path='/HomePage' element={
+          <AuthorizationGuard >
+            <HomePage />
+          </AuthorizationGuard>} />
 
-        <Route path='/createpost' element={<CreatePost />} />
+        {/* admin routes */}
+        <Route path='/AdminPanel/users' element={
+          <AuthorizationGuard allowedRoles={['admin']}>
+            <AdminPanel />
+          </AuthorizationGuard>
+        } />
+
+        <Route path='/AdminPanel/dashboard' element={
+          <AuthorizationGuard allowedRoles={['admin']}>
+            <AdminPanel />
+          </AuthorizationGuard>
+        } />
+
+        <Route path='/adminpanel/news' element={
+          <AuthorizationGuard allowedRoles={['admin']}>
+            <NewsController />
+          </AuthorizationGuard>
+        } />
+
+        {/* journalist route */}
+        <Route path='/createpost' element={
+          <AuthorizationGuard allowedRoles={['journalist','admin']}>
+            <CreatePost />
+          </AuthorizationGuard>} />
 
       </Routes>
     </BrowserRouter>

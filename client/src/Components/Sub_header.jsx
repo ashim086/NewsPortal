@@ -1,19 +1,21 @@
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function SubHeader() {
-    const navItems = [
-        'News',
-        'World',
-        'Business',
-        'Art',
-        'Lifestyle',
-        'Sport',
-        'Opinion',
-        'Culture',
-        'Politic',
-        'Advertisement',
-        'Job Portal'
-    ];
+
+    const [category, setCategory] = useState([])
+    useEffect(() => {
+
+        const fetchCateopry = async () => {
+            const data = await fetch("http://localhost:4040/api/category/all")
+            const categories = await data.json()
+            console.log(categories)
+            setCategory(categories.data)
+        }
+
+        fetchCateopry()
+    }, [])
+
 
     return (
         <div className="flex justify-between items-center border-b-2 ">
@@ -30,10 +32,10 @@ export default function SubHeader() {
             {/* Center - Navigation */}
             <nav className="flex px-6">
                 <ul className="flex items-center space-x-8">
-                    {navItems.map((item) => (
-                        <li key={item}>
+                    {category.map((item,index) => (
+                        <li key={index}>
                             <button className="py-3 text-sm hover:text-gray-600 transition-colors relative group cursor-pointer">
-                                {item}
+                                {item.categoryName}
                                 <p className="absolute inset-x-0 bottom-0 h-0.5 bg-black scale-x-0 group-hover:scale-x-100 transition-transform" />
                             </button>
                         </li>

@@ -1,35 +1,48 @@
-import jsonwebtoken from "jsonwebtoken"
 import customError from "../util/customError.js";
+import { UserModel } from "../models/UserModel.js";
+import { verifyToken } from "../util/jwt.js";
 
-export function AuthMiddleware(req, res, next) {
+export const AuthMiddleware = (role) => {
 
-    const authHeader = req.headers.authorization
+    return async (req, res, next) => {
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        try {
 
-        const err = new customError("Authentication error,token not found login again", 401);
-        next(err);
-        console.log(err)
-    }
+            // get auth header
+            const authHeader = req.headers.authorization
 
-    else {
+            // check the structure of token
+            if (!authHeader || !authHeader.startsWith("Bearer")) {
 
-        const token = authHeader.split(" ")[1];
+                throw new customError("Authentication error,token not found login again", 401);
 
-        jsonwebtoken.verify(token, process.env.PRIVATE_KEY, (err, decode) => {
-
-            if (!err && decode) {
-
-                req.head = decode;
-                console.log(decode)
-
-                next();
             }
-            else {
 
-                console.error("JWT Error:", err.message);
-                return next(new customError("Invalid or expired token", 401));
+            // splitting token from authorization header
+            const token = authHeader.split(" ")[1];
+
+            // decoding token
+            const decode = verifyToken(token)
+
+            // console.log(decode)
+            const user = await UserModel.findById(decode._id.toString())
+            if (!user) {
+                throw new customError("Unauthorized access denied", 401)
             }
-        })
+
+            // check role here
+            if (role && !role.includes(user.role)) {
+                throw new customError("Forbidden: You don't have permission to access this resource", 403)
+            }
+
+            // set decode token into request head
+            req.user = decode;
+            next()
+            // console.log(decode)
+
+        } catch (error) {
+            next(error)
+        }
+
     }
 }

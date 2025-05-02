@@ -1,113 +1,84 @@
-import { Newspaper, ShieldUser } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import AdminPanelNavbar from "../../Components/AdminPanelNavbar";
 
 export default function AdminPanel() {
-    const adminNavbar = ["Dashboard", "Users", "News"];
     const [users, setUsers] = useState([]);
+    const [message, setMessage] = useState("");
 
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
-    const admin = {
-        name: "Admin Name",
-        email: "admin@admin.com",
+    const fetchUsers = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await fetch("http://localhost:4040/api/admin/Users", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            const data = await res.json();
+
+            if (data.success === true || data.success === "true") { // Handling both boolean and string
+                setUsers(data.users);
+                setMessage(data.message);
+            } else {
+                setMessage(data.message || "Failed to fetch users");
+            }
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            setMessage("An error occurred while fetching users");
+        }
     };
 
-    //fetch users
-    useEffect(() => {
-
-        const token = localStorage.getItem("token");
-
-        fetch("http://localhost:4040/api/admin/Users", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
-        })
-            .then((response) => response.json())
-            .then((Users) => {
-                console.log(Users)
-                console.log(token)
-                setUsers(Users)
-                if (Users.success === true) {
-                    toast.success(Users.message)
-                    return
-                }
-                else {
-                    toast.error(Users.message)
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
-    }, [])
-
     return (
-        <div className="m-7">
-            {/* Header Section */}
-            <div className="flex space-x-7 justify-between shadow-lg rounded-3xl p-5 my-6">
-                {/* Admin Info */}
-                <div>
-                    <ShieldUser />
-                    <h1 className="font-bold">{admin.name}</h1>
-                    <p className="font-bold">{admin.email}</p>
-                </div>
-
-                {/* Admin Panel Title */}
-                <div className="flex items-center space-x-7">
-                    <h1 className="text-6xl font-bold tracking-widest">ADMIN PANEL</h1>
-                    <Newspaper className="size-[54px]" />
-                </div>
-
-                {/* Navbar */}
-                <ul className="flex space-x-7 items-center">
-                    {adminNavbar.map((item, index) => (
-                        <li className="font-bold cursor-pointer hover:text-neutral-600" key={index}>
-                            {item}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            {/* Users Table */}
-            <div className="shadow-lg rounded-3xl ">
-                <h1 className="text-3xl font-semibold text-center mb-4">Users</h1>
-                <div >
-                    <table className="w-full border-collapse  border-gray-300">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className=" p-3 text-left">NAME</th>
-                                <th className=" p-3 text-left">EMAIL</th>
-                                <th className=" p-3 text-left">ROLE</th>
-                                <th className=" p-3 text-left">ACTION</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users && users.length > 0 ? (
-                                users.map((user, index) => (
-                                    <tr key={index}>
-                                        <td className="p-3">{user.name}</td>
-                                        <td className="p-3">{user.email}</td>
-                                        <td className="p-3">{user.role}</td>
-                                        <td className="p-3">
-                                            <button className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
-                                                Remove
-                                            </button>
+        <>
+            <div className="m-7">
+                <AdminPanelNavbar />
+                <div className="shadow-lg rounded-3xl">
+                    <h1 className="text-3xl font-semibold text-center mb-4">Users</h1>
+                    {message && (
+                        <p className="text-center text-green-600 font-medium mb-3">{message}</p>
+                    )}
+                    <div>
+                        <table className="w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-200">
+                                    <th className="p-3 text-left">NAME</th>
+                                    <th className="p-3 text-left">EMAIL</th>
+                                    <th className="p-3 text-left">ROLE</th>
+                                    <th className="p-3 text-left">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.length > 0 ? (
+                                    users.map((user, index) => (
+                                        <tr key={index} className="border-t border-gray-200">
+                                            <td className="p-3">{user.name}</td>
+                                            <td className="p-3">{user.email}</td>
+                                            <td className="p-3 capitalize">{user.role}</td>
+                                            <td className="p-3">
+                                                <button className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
+                                                    Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="4" className="p-3 text-center text-gray-500">
+                                            No users found
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="4" className="p-3 text-center text-gray-500">
-                                        No users found
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

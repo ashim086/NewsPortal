@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { GetAllAdmins, GetAllJournalists, GetAllUsers, GetAllViewers } from "../controllers/AdminManagement.js";
+import { GetAllAdmins, GetAllJournalists, GetAllUsers, GetAllViewers } from "../controllers/adminController.js";
 import { AuthMiddleware } from "../middlewares/Authmiddleware.js";
 
-const route = Router();
+const adminRoute = Router();
 
-route.get('/viewers', AuthMiddleware, GetAllViewers);
+adminRoute.get('/viewers', AuthMiddleware(["admin"]), GetAllViewers);
 
-route.get('/journalists', AuthMiddleware, GetAllJournalists);
+adminRoute.get('/journalists', AuthMiddleware(["admin"]), GetAllJournalists);
 
-route.get('/admins', AuthMiddleware, GetAllAdmins);
+adminRoute.get('/admins', AuthMiddleware(["admin"]), GetAllAdmins);
 
-route.get('/Users', AuthMiddleware, GetAllUsers)
+adminRoute.get('/Users', AuthMiddleware(["admin"]), GetAllUsers)
 
-export default route;
+export default adminRoute;

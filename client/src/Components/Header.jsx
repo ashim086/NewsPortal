@@ -21,7 +21,8 @@ export default function Header() {
 
             {/* Center Section */}
             <div className="flex-1 flex items-center justify-center p-6 border-r-2 border-indigo-950 rounded-md">
-                <h1 className="text-6xl font-serif font-bold tracking-wide">
+                <h1 className="text-6xl font-serif font-bold tracking-wide cursor-pointer"
+                    onClick={() => navigate(`/homepage`)}>
                     BREAKING NEWS PORTAL
                 </h1>
             </div>

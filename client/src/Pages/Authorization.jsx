@@ -24,7 +24,7 @@ function Authorization() {
     async function HandleRegistration(event) {
         event.preventDefault();
 
-        const response = await fetch("http://localhost:4040/api/auth/register", {
+        const response = await fetch("http://localhost:4040/api/user/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -45,7 +45,7 @@ function Authorization() {
     async function HandleLogin(event) {
         event.preventDefault();
 
-        const response = await fetch("http://localhost:4040/api/auth/signin", {
+        const response = await fetch("http://localhost:4040/api/user/signin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -54,13 +54,13 @@ function Authorization() {
         });
 
         const data = await response.json();
-
+        console.log("login", data)
         if (!response.ok) {
 
             toast.error(data.message || "Login failed");
 
         } else {
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('token', data.access_token);
             toast.success(data.message || "Login successful");
 
             setTimeout(() => navigate('/homepage'), 1000);

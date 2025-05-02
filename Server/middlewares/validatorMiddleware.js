@@ -1,4 +1,4 @@
-import { asyncErrorHandler } from "../util/asyncErrorHandler.js";
+import { asyncErrorHandler } from "../util/asyncFunction.js";
 
 export const validator = function (schema) {
 
