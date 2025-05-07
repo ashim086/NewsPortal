@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, registration } from "../controllers/userContorller.js";
+import { deleteUserByID, getProfile, login, registration, updateProfile } from "../controllers/userContorller.js";
 import { validator } from "../middlewares/validatorMiddleware.js";
 import { LoginSchemaValidator, SignupSchemaValidator } from "../validator/AuthorizationValidator.js";
 import { AuthMiddleware } from "../middlewares/Authmiddleware.js";
@@ -11,8 +11,7 @@ userRoute.post("/register", validator(SignupSchemaValidator), registration);
 userRoute.post("/signin", validator(LoginSchemaValidator), login);
 
 //secured authenticated route
-userRoute.get("/profile", validator(LoginSchemaValidator), AuthMiddleware(["viewer", "journalist", "admin"]), login);
-userRoute.patch("/updateProfile", validator(LoginSchemaValidator), AuthMiddleware(["viewer", "journalist", "admin"]), login);
-userRoute.delete("/delete", validator(LoginSchemaValidator), AuthMiddleware(["viewer", "journalist", "admin"]), login);
-
+userRoute.get("/profile",  AuthMiddleware(["viewer", "journalist", "admin"]), getProfile);
+userRoute.patch("/updateProfile",  AuthMiddleware(["viewer", "journalist", "admin"]), updateProfile);
+userRoute.delete("/delete", AuthMiddleware(["viewer", "journalist", "admin"]), deleteUserByID);
 export default userRoute;

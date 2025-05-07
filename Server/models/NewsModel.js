@@ -5,44 +5,54 @@ const NewsSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        minlength: [5, "Title is tooShort"]
+        minlength: [5, "Title is too short"]
     },
     description: {
         type: String,
         required: true,
-        minlength: [15, "News should be descibed in detail"]
+        minlength: [15, "News should be described in detail"]
     },
     journalist: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    image: [
-        {
-            fileName: {
-                type: String,
-                required: true
-            },
-            path: {
-                type: String,
-                required: true
-            }
+    image: [{
+        fileName: {
+            type: String,
+            required: true
+        },
+        path: {
+            type: String,
+            required: true
         }
-    ],
+    }],
     category: {
         type: Schema.Types.ObjectId,
-        required: [true, 'categoryID is required'],
+        required: [true, 'Category ID is required'],
         ref: "category"
     },
-    date: {
-        type: Date,
-        default: Date.now,
-    },
+    viewCount: {
+        type: Number,
+        default: 0
+        },
     status: {
         type: String,
         enum: ["pending", "approved", "rejected"],
         default: "pending"
     }
-}, { timestamps: true })
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
-export const News = model("news", NewsSchema)
+// Add indexes for better performance
+NewsSchema.index({ status: 1 });
+NewsSchema.index({ category: 1 });
+NewsSchema.index({ journalist: 1 });
+NewsSchema.index({ createdAt: -1 });
+
+export const News = model("News", NewsSchema);
+
+

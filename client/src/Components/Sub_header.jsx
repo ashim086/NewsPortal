@@ -9,7 +9,7 @@ export default function SubHeader() {
         const fetchCateopry = async () => {
             const data = await fetch("http://localhost:4040/api/category/all")
             const categories = await data.json()
-            console.log(categories)
+            // console.log(categories)
             setCategory(categories.data)
         }
 

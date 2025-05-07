@@ -4,6 +4,7 @@ import NewsCard from "../Components/NewsCard";
 import SubHeader from "../Components/Sub_header";
 
 export default function HomePage() {
+   
     return (
         <>
             <Header />

@@ -37,7 +37,7 @@ export default function Footer() {
                     <Mail className="w-6 h-6 hover:text-gray-600 cursor-pointer" />
                     <Instagram className="w-6 h-6 hover:text-gray-600 cursor-pointer" />
                     <Facebook className="w-6 h-6 hover:text-gray-600 cursor-pointer" />
-                    <Linkedin className="w-6 h-6 hover:text-gra y-600 cursor-pointer" />
+                    <Linkedin className="w-6 h-6 hover:text-gra y-600 cursor-pointer" href="#"/>
                 </div>
                 <div className="flex w-full items-center text-center justify-evenly ">
                     {sociallink.map((item) => (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AdminPanelNavbar from "../../Components/AdminPanelNavbar";
 import CategorySelect from "../../Components/CategorySelect";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function NewsController() {
     const [news, setNews] = useState([]);
@@ -57,7 +58,6 @@ export default function NewsController() {
     };
 
     const handleUpdateStatus = async (newsId, newStatus) => {
-
         try {
             const token = localStorage.getItem("token");
             const res = await fetch(`http://localhost:4040/api/news/update-status/${newsId}`, {
@@ -82,7 +82,6 @@ export default function NewsController() {
     };
 
     const handleDeleteNews = async (newsId) => {
-
         try {
             const token = localStorage.getItem("token");
             const res = await fetch(`http://localhost:4040/api/news/delete/${newsId}`, {
@@ -153,53 +152,64 @@ export default function NewsController() {
                         </tr>
                     </thead>
                     <tbody>
-                        {news.length > 0 ? (
-                            news.map((item) => (
-                                <tr key={item._id} className="border-t border-gray-200">
-                                    <td className="p-3">{item.journalist?.name || "N/A"}</td>
-                                    <td className="p-3">{item.title}</td>
-                                    <td className="p-3 capitalize">{item.status}</td>
-                                    <td className="p-3 w-48">
-                                        <CategorySelect
-                                            value={item.category?._id || ""}
-                                            onChange={(catId) =>
-                                                handleUpdateCategory(item._id, catId)
-                                            }
-                                            options={categories}
-                                        />
-                                    </td>
-                                    <td className="p-3 space-x-2">
-                                        <button
-                                            onClick={() => handleUpdateStatus(item._id, "approved")}
-                                            className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
-                                        >
-                                            Approve
-                                        </button>
-                                        <button
-                                            onClick={() => handleUpdateStatus(item._id, "rejected")}
-                                            className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
-                                        >
-                                            Reject
-                                        </button>
-                                        <button
-                                            onClick={() => handleDeleteNews(item._id)}
-                                            className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
-                                        >
-                                            Remove
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td
-                                    colSpan="5"
-                                    className="p-3 text-center text-gray-500 italic"
+                        <AnimatePresence>
+                            {news.length > 0 ? (
+                                news.map((item) => (
+                                    <motion.tr
+                                        key={item._id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.5, ease: "easeIn" }}
+                                        className="border-t border-gray-200"
+                                    >
+                                        <td className="p-3">{item.journalist?.name || "N/A"}</td>
+                                        <td className="p-3">{item.title}</td>
+                                        <td className="p-3 capitalize">{item.status}</td>
+                                        <td className="p-3 w-48">
+                                            <CategorySelect
+                                                value={item.category?._id || ""}
+                                                onChange={(catId) =>
+                                                    handleUpdateCategory(item._id, catId)
+                                                }
+                                                options={categories}
+                                            />
+                                        </td>
+                                        <td className="p-3 space-x-2">
+                                            <button
+                                                onClick={() => handleUpdateStatus(item._id, "approved")}
+                                                className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600"
+                                            >
+                                                Approve
+                                            </button>
+                                            <button
+                                                onClick={() => handleUpdateStatus(item._id, "rejected")}
+                                                className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600"
+                                            >
+                                                Reject
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteNews(item._id)}
+                                                className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                                            >
+                                                Remove
+                                            </button>
+                                        </td>
+                                    </motion.tr>
+                                ))
+                            ) : (
+                                <motion.tr
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.5 }}
                                 >
-                                    No news found
-                                </td>
-                            </tr>
-                        )}
+                                    <td colSpan="5" className="p-3 text-center text-gray-500 italic">
+                                        No news found
+                                    </td>
+                                </motion.tr>
+                            )}
+                        </AnimatePresence>
                     </tbody>
                 </table>
             </div>

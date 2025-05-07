@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { Share2 } from "lucide-react";
+import { ChartBarStacked, CircleUser, Share2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import img4 from "../assets/img4.png";
 import { useEffect, useState } from "react";
+import { storeRecentRead } from "../utils/newsAPI";
 
 export default function NewsCard() {
     const navigate = useNavigate();
@@ -14,18 +15,23 @@ export default function NewsCard() {
             const res = await fetch("http://localhost:4040/api/news/popularnews");
             const data = await res.json();
             setPopularNews(data.popularArticle);
-            console.log(data.popularArticle);
         }
 
         async function fetchAllNews() {
             const res = await fetch("http://localhost:4040/api/news/allnews");
             const data = await res.json();
             setNews(data.news);
+            // console.log(data.news);
         }
 
         fetchPopularNews();
         fetchAllNews();
     }, []);
+
+    const handleNewsClick = async (newsId, categoryId) => {
+        await storeRecentRead(newsId);
+        navigate(`news/${newsId}/${categoryId}`);
+    };
 
     const ads = [
         { id: 1, title: "For male/female that between 23-50 YO" },
@@ -59,13 +65,21 @@ export default function NewsCard() {
                     variants={itemVariants}
                 >
                     <h1
-                        onClick={() => navigate(`news/${News[0]._id}`)}
+                        onClick={() => handleNewsClick(News[0]?._id, News[0]?.category?._id)}
                         className="text-2xl font-semibold cursor-pointer hover:text-gray-600 transition-colors"
                     >
                         {News[0]?.title ?? "Fetching latest news..."}
                     </h1>
-                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                        <Share2 className="cursor-pointer" />
+                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="flex justify-between">
+                        <div>
+
+                            <Share2 className="cursor-pointer" />
+                        </div>
+                        <div className="flex space-x-4">
+                            < ChartBarStacked />: <p className="font-bold px-3">{News[0]?.category.categoryName ?? "Fetching latest news..."} </p>
+                            <CircleUser />: <p className="font-bold px-3">{News[0]?.journalist.name ?? "Fetching latest news..."} </p>
+
+                        </div>
                     </motion.div>
                     <hr className="my-4" />
                     {News[0]?.image?.[0]?.path ? (
@@ -89,11 +103,26 @@ export default function NewsCard() {
                     className="p-8 space-y-2 grow basis-6xl rounded-md border-r-2 border-indigo-950"
                     variants={itemVariants}
                 >
-                    <h1 className="border-2 text-5xl font-bold p-2 cursor-pointer hover:text-gray-600 transition-colors"
-
-                        onClick={() => navigate(`news/${News[1]._id}`)}>
+                    <h1
+                        className="border-2 text-5xl font-bold p-2 cursor-pointer hover:text-gray-600 transition-colors"
+                        onClick={() => handleNewsClick(News[1]?._id, News[1]?.category?._id)}
+                    >
                         {News[1]?.title ?? "Fetching latest news..."}
                     </h1>
+
+                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="flex justify-between">
+                        <div>
+
+                            <Share2 className="cursor-pointer" />
+                        </div>
+                        <div className="flex space-x-4">
+                            < ChartBarStacked />: <p className="font-bold px-3">{News[1]?.category.categoryName ?? "Fetching latest news..."} </p>
+                            <CircleUser />: <p className="font-bold px-3">{News[1]?.journalist.name ?? "Fetching latest news..."} </p>
+
+                        </div>
+                    </motion.div>
+                    <hr className="my-4" />
+
                     {News[1]?.image?.[0]?.path ? (
                         <motion.img
                             className="w-4xl"
@@ -120,7 +149,7 @@ export default function NewsCard() {
                     <div className="divide-y">
                         {popularNews.map((article, index) => (
                             <motion.div
-                                key={article.id}
+                                key={article._id}
                                 className="py-4 first:pt-0 last:pb-0"
                                 whileHover={{ x: 10 }}
                                 transition={{ duration: 0.2 }}
@@ -130,11 +159,15 @@ export default function NewsCard() {
                                         {String(index + 1).padStart(2, '0')}
                                     </span>
                                     <div>
-                                        <h3 className="font-medium text-gray-900 leading-snug hover:text-gray-600 cursor-pointer"
-                                            onClick={() => navigate(`news/${article._id}`)}>
+                                        <h3
+                                            className="font-medium text-gray-900 leading-snug hover:text-gray-600 cursor-pointer"
+                                            onClick={() => handleNewsClick(article._id, article.category._id)}
+                                        >
                                             {article.title}
                                         </h3>
-                                        <p className="text-sm text-gray-500 mt-1">{article.date}</p>
+                                        <p className="text-sm text-gray-500 mt-1">
+                                            {new Date(article.createdAt).toLocaleDateString()}
+                                        </p>
                                     </div>
                                 </div>
                             </motion.div>
@@ -155,10 +188,27 @@ export default function NewsCard() {
                         variants={itemVariants}
                     >
                         <div className="space-y-6">
-                            <h2 className="text-2xl font-serif font-bold leading-tight cursor-pointer hover:text-gray-600 transition-colors"
-                                onClick={() => navigate(`news/${News[2]._id}`)}>
+                            <h2
+                                className="text-2xl font-serif font-bold leading-tight cursor-pointer hover:text-gray-600 transition-colors"
+                                onClick={() => handleNewsClick(News[2]?._id, News[2]?.category?._id)}
+                            >
                                 {News[2]?.title ?? "Fetching latest news..."}
                             </h2>
+
+                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="flex justify-between">
+                                <div>
+
+                                    <Share2 className="cursor-pointer" />
+                                </div>
+                                <div className="flex space-x-4">
+                                    < ChartBarStacked />: <p className="font-bold px-3">{News[2]?.category.categoryName ?? "Fetching latest news..."} </p>
+                                    <CircleUser />: <p className="font-bold px-3">{News[2]?.journalist.name ?? "Fetching latest news..."} </p>
+
+                                </div>
+                            </motion.div>
+
+                            <hr className="my-4" />
+
                             <div className="flex gap-6">
                                 {News[2]?.image?.[0]?.path ? (
                                     <motion.img
@@ -212,10 +262,27 @@ export default function NewsCard() {
                         variants={itemVariants}
                     >
                         <div className="space-y-6">
-                            <h1 className="text-4xl font-serif font-bold leading-tight cursor-pointer hover:text-gray-600 transition-colors"
-                                onClick={() => navigate(`news/${News[3]._id}`)}>
+                            <h1
+                                className="text-4xl font-serif font-bold leading-tight cursor-pointer hover:text-gray-600 transition-colors"
+                                onClick={() => handleNewsClick(News[3]?._id, News[3]?.category?._id)}
+                            >
                                 {News[3]?.title ?? "Fetching latest news..."}
                             </h1>
+
+                            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="flex justify-between">
+                                <div>
+
+                                    <Share2 className="cursor-pointer" />
+                                </div>
+                                <div className="flex space-x-4">
+                                    < ChartBarStacked />: <p className="font-bold px-3">{News[3]?.category.categoryName ?? "Fetching latest news..."} </p>
+                                    <CircleUser />: <p className="font-bold px-3">{News[3]?.journalist.name ?? "Fetching latest news..."} </p>
+
+                                </div>
+                            </motion.div>
+
+                            <hr className="my-4" />
+
                             <div className="flex gap-6">
                                 {News[3]?.image?.[0]?.path ? (
                                     <motion.img

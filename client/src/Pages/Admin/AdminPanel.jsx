@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminPanelNavbar from "../../Components/AdminPanelNavbar";
+import { motion, AnimatePresence } from "framer-motion"; 
 
 export default function AdminPanel() {
     const [users, setUsers] = useState([]);
@@ -22,7 +23,7 @@ export default function AdminPanel() {
 
             const data = await res.json();
 
-            if (data.success === true || data.success === "true") { // Handling both boolean and string
+            if (data.success === true || data.success === "true") {
                 setUsers(data.users);
                 setMessage(data.message);
             } else {
@@ -54,26 +55,35 @@ export default function AdminPanel() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.length > 0 ? (
-                                    users.map((user, index) => (
-                                        <tr key={index} className="border-t border-gray-200">
-                                            <td className="p-3">{user.name}</td>
-                                            <td className="p-3">{user.email}</td>
-                                            <td className="p-3 capitalize">{user.role}</td>
-                                            <td className="p-3">
-                                                <button className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
-                                                    Remove
-                                                </button>
+                                <AnimatePresence> 
+                                    {users.length > 0 ? (
+                                        users.map((user, index) => (
+                                            <motion.tr
+                                                key={index}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.3, ease: "easeOut" }}
+                                                className="border-t border-gray-200"
+                                            >
+                                                <td className="p-3">{user.name}</td>
+                                                <td className="p-3">{user.email}</td>
+                                                <td className="p-3 capitalize">{user.role}</td>
+                                                <td className="p-3">
+                                                    <button className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600">
+                                                        Remove
+                                                    </button>
+                                                </td>
+                                            </motion.tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="4" className="p-3 text-center text-gray-500">
+                                                No users found
                                             </td>
                                         </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="4" className="p-3 text-center text-gray-500">
-                                            No users found
-                                        </td>
-                                    </tr>
-                                )}
+                                    )}
+                                </AnimatePresence>
                             </tbody>
                         </table>
                     </div>

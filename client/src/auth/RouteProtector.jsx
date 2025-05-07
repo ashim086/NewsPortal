@@ -9,7 +9,7 @@ export default function AuthorizationGuard({ children, allowedRoles = ['admin', 
 
     try {
         const decoded = JSON.parse(atob(token.split('.')[1]));
-        console.log("Decoded token:", decoded);
+        // console.log("Decoded token:", decoded);
 
         const userRole = decoded?.role || decoded?.user?.role;
 

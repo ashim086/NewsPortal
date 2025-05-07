@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from "react-toastify";
 import { motion } from 'framer-motion';
 import {
@@ -20,6 +20,10 @@ function Authorization() {
         { id: 'journalist', label: 'Journalist' },
         { id: 'admin', label: 'Admin' }
     ];
+
+    useEffect(() => {
+        localStorage.removeItem("token")
+    }, [])
 
     async function HandleRegistration(event) {
         event.preventDefault();
@@ -54,18 +58,30 @@ function Authorization() {
         });
 
         const data = await response.json();
-        console.log("login", data)
+        // console.log("login response:", data);
+
         if (!response.ok) {
-
             toast.error(data.message || "Login failed");
-
         } else {
-            localStorage.setItem('token', data.access_token);
+            const token = data.access_token; // store cleanly
+            localStorage.setItem('token', token);
             toast.success(data.message || "Login successful");
 
-            setTimeout(() => navigate('/homepage'), 1000);
+            try {
+                const decoded = JSON.parse(atob(token.split('.')[1]));
+                console.log("decoded token:", decoded);
+
+                // Redirect based on role
+                const targetRoute = decoded.role === "admin" ? '/adminpanel/dashboard' : '/homepage';
+                setTimeout(() => navigate(targetRoute), 1000);
+
+            } catch (e) {
+                console.error("Invalid token", e);
+                toast.error("Invalid token received");
+            }
         }
     }
+
 
     return (
         <div className="min-h-screen flex items-center justify-center">

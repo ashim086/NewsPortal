@@ -8,6 +8,7 @@ import newsRoute from "./routes/newsRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import adminRoute from "./routes/AdminRoute.js";
 import helmet from 'helmet'
+import recentReadRoutes from "./routes/recentReadRoute.js";
 dotenv.config();
 
 const app = express();
@@ -26,7 +27,7 @@ app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute)
 app.use("/api/news", newsRoute)
 app.use("/api/category", categoryRoute)
-
+app.use('/api', recentReadRoutes);
 
 app.listen(PORT, () => {
     DbConnection()

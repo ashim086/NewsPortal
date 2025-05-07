@@ -19,10 +19,10 @@ createRoot(document.getElementById('root')).render(
 
         {/* Public routes */}
         <Route path='/' element={<Authorization />} />
-        <Route path='/homepage/news/:newsID' element={<SingleNews />} />
+        <Route path='/homepage/news/:newsID/:categoryID' element={<SingleNews />} />
 
         {/* Protected routes */}
-        <Route path='/HomePage' element={
+        <Route path='/homepage' element={
           <AuthorizationGuard >
             <HomePage />
           </AuthorizationGuard>} />

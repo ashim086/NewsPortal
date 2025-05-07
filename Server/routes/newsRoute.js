@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AuthMiddleware } from '../middlewares/Authmiddleware.js';
-import { createNews, deleteNewsCreatedByJournalist, fetchAllNews, fetchAllNewsByCategory, fetchAllNewsCreatedByJournalist, fetchAllNewsPublicly, fetchSingleNewsByID, mostPopularArticle, updateNewsCategory, updateNewsCreatedByJournalist, updateNewsStatus } from '../controllers/newsController.js';
+import { createNews, deleteNewsCreatedByJournalist, fetchAllNews, fetchAllNewsByCategory, fetchAllNewsCreatedByJournalist, fetchAllNewsPublicly, fetchSingleNewsByID, mostPopularArticle, relatableNews, updateNewsCategory, updateNewsCreatedByJournalist, updateNewsStatus } from '../controllers/newsController.js';
 import { uploadFile } from '../middlewares/uploadFile.js';
 
 const newsRoute = Router();
@@ -8,6 +8,7 @@ const newsRoute = Router();
 
 // Public routes
 newsRoute.get("/single/:newsID", fetchSingleNewsByID);
+newsRoute.get("/single/:newsID/:categoryID", relatableNews);
 newsRoute.get("/category/:categoryID", fetchAllNewsByCategory);
 newsRoute.get("/allnews", fetchAllNewsPublicly);
 newsRoute.get("/popularnews", mostPopularArticle);

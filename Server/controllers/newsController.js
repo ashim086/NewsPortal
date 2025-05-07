@@ -19,6 +19,7 @@ export const createNews = asyncErrorHandler(async (req, res, next) => {
     }
 
     const newsImage = req.file;
+
     if (!newsImage) {
         throw new customError("News image is required", 400);
     }
@@ -125,6 +126,10 @@ export const fetchSingleNewsByID = asyncErrorHandler(async (req, res, next) => {
         throw new customError('News not found', 404);
     }
 
+    // Increment viewCount
+    news.viewCount = (news.viewCount || 0) + 1;
+    await news.save(); // Save the updated view count
+
     res.status(200).json({
         msg: 'News fetched successfully',
         status: "success",
@@ -132,6 +137,7 @@ export const fetchSingleNewsByID = asyncErrorHandler(async (req, res, next) => {
         news
     });
 });
+
 
 // ===================== Fetch News Created by Journalist =====================
 export const fetchAllNewsCreatedByJournalist = asyncErrorHandler(async (req, res, next) => {
@@ -303,3 +309,27 @@ export const mostPopularArticle = asyncErrorHandler(async (req, res, next) => {
         status:'success'
     })
 })
+
+export const relatableNews = asyncErrorHandler(async (req, res, next) => {
+    const { categoryID } = req.params;
+
+    const category = await Category.findById(categoryID);
+    if (!category) {
+        return res.status(404).json({
+            message: "Category not found",
+            popularArticle: [],
+            status: 'fail'
+        });
+    }
+
+    const popularArticle = await News.find({
+        status: "approved",
+        category: categoryID  // 👉 filter by ObjectId directly
+    }).limit(6);
+
+    res.status(200).json({
+        message: "Popular articles fetched successfully",
+        popularArticle,
+        status: 'success'
+    });
+});
