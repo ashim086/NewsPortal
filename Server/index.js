@@ -8,7 +8,7 @@ import newsRoute from "./routes/newsRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import helmet from 'helmet'
 import recentReadRoutes from "./routes/recentReadRoute.js";
-import adminRoute from "./routes/admin.route.js";
+import adroute from "./routes/admin.route.js";
 dotenv.config();
 
 const app = express();
@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 4041;
 
 //routes
 app.use("/api/user", userRoute);
-app.use("/api/admin", adminRoute)
+app.use("/api/admin", adroute)
 app.use("/api/news", newsRoute)
 app.use("/api/category", categoryRoute)
 app.use('/api', recentReadRoutes);
