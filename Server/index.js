@@ -8,7 +8,7 @@ import newsRoute from "./routes/newsRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import helmet from 'helmet'
 import recentReadRoutes from "./routes/recentReadRoute.js";
-import adminRoute from "./routes/adminRoute.js";
+import adminRoute from "./routes/AdminRoute.js";
 dotenv.config();
 
 const app = express();
