@@ -17,7 +17,7 @@ export default function SingleNews() {
     useEffect(() => {
         const fetchSingleNews = async () => {
             try {
-                const res = await fetch(`http://localhost:4040/api/news/single/${newsID}`);
+                const res = await fetch(`https://newsportal-juir.onrender.com/api/news/single/${newsID}`);
                 const data = await res.json();
                 setNews(data.news);
 

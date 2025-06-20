@@ -21,7 +21,7 @@ export function RelatableNews() {
                     recommendations = await getRecommendations();
                 } else {
                     // Fetch popular articles for guests
-                    const res = await fetch("http://localhost:4040/api/news/popularnews");
+                    const res = await fetch("https://newsportal-juir.onrender.com/api/news/popularnews");
                     const data = await res.json();
                     recommendations = data.popularArticle.slice(0, 5);
                 }

@@ -35,7 +35,7 @@ export default function Header() {
         try {
             setLoading(true)
             const token = localStorage.getItem('token');
-            const response = await fetch("http://localhost:4040/api/user/profile", {
+            const response = await fetch("https://newsportal-juir.onrender.com/api/user/profile", {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`

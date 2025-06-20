@@ -28,7 +28,7 @@ function Authorization() {
     async function HandleRegistration(event) {
         event.preventDefault();
 
-        const response = await fetch("http://localhost:4040/api/user/register", {
+        const response = await fetch("https://newsportal-juir.onrender.com/api/user/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -49,7 +49,7 @@ function Authorization() {
     async function HandleLogin(event) {
         event.preventDefault();
 
-        const response = await fetch("http://localhost:4040/api/user/signin", {
+        const response = await fetch("https://newsportal-juir.onrender.com/api/user/signin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

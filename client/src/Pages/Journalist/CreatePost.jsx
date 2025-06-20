@@ -45,7 +45,7 @@ export default function CreatePost() {
         if (imageFile) formData.append('news', imageFile);
 
         try {
-            const response = await fetch('http://localhost:4040/api/news/create', {
+            const response = await fetch('https://newsportal-juir.onrender.com/api/news/create', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData

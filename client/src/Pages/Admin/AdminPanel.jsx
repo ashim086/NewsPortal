@@ -13,7 +13,7 @@ export default function AdminPanel() {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:4040/api/admin/Users", {
+            const res = await fetch("https://newsportal-juir.onrender.com/api/admin/Users", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

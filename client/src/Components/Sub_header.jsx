@@ -7,7 +7,7 @@ export default function SubHeader() {
     useEffect(() => {
 
         const fetchCateopry = async () => {
-            const data = await fetch("http://localhost:4040/api/category/all")
+            const data = await fetch("https://newsportal-juir.onrender.com/api/category/all")
             const categories = await data.json()
             // console.log(categories)
             setCategory(categories.data)

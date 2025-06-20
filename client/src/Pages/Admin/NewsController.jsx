@@ -16,7 +16,7 @@ export default function NewsController() {
     const fetchNews = async () => {
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:4040/api/news/all", {
+            const res = await fetch("https://newsportal-juir.onrender.com/api/news/all", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export default function NewsController() {
     const fetchCategories = async () => {
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:4040/api/category/all", {
+            const res = await fetch("https://newsportal-juir.onrender.com/api/category/all", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ export default function NewsController() {
     const handleUpdateStatus = async (newsId, newStatus) => {
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:4040/api/news/update-status/${newsId}`, {
+            const res = await fetch(`https://newsportal-juir.onrender.com/api/news/update-status/${newsId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export default function NewsController() {
     const handleDeleteNews = async (newsId) => {
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch(`http://localhost:4040/api/news/delete/${newsId}`, {
+            const res = await fetch(`https://newsportal-juir.onrender.com/api/news/delete/${newsId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export default function NewsController() {
         try {
             const token = localStorage.getItem("token");
             const res = await fetch(
-                `http://localhost:4040/api/news/update/${newsId}`,
+                `https://newsportal-juir.onrender.com/api/news/update/${newsId}`,
                 {
                     method: "PUT",
                     headers: {

@@ -3,7 +3,7 @@ export const storeRecentRead = async (newsId) => {
     if (!token) return;
 
     try {
-        await fetch("http://localhost:4040/api/recent-reads", {
+        await fetch("https://newsportal-juir.onrender.com/api/recent-reads", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export const storeRecentRead = async (newsId) => {
 
 export const getRecommendations = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:4040/api/recommendations", {
+    const response = await fetch("https://newsportal-juir.onrender.com/api/recommendations", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

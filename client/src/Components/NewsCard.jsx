@@ -12,13 +12,13 @@ export default function NewsCard() {
 
     useEffect(() => {
         async function fetchPopularNews() {
-            const res = await fetch("http://localhost:4040/api/news/popularnews");
+            const res = await fetch("https://newsportal-juir.onrender.com/api/news/popularnews");
             const data = await res.json();
             setPopularNews(data.popularArticle);
         }
 
         async function fetchAllNews() {
-            const res = await fetch("http://localhost:4040/api/news/allnews");
+            const res = await fetch("https://newsportal-juir.onrender.com/api/news/allnews");
             const data = await res.json();
             setNews(data.news);
             // console.log(data.news);

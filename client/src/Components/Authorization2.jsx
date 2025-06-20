@@ -61,7 +61,7 @@ function Authorization() {
         try {
             const validationResult = registrationSchema.parse({ name, email, password, role });
 
-            const response = await fetch("http://localhost:4040/api/auth/register", {
+            const response = await fetch("https://newsportal-juir.onrender.com/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validationResult)
@@ -103,7 +103,7 @@ function Authorization() {
         try {
             const validationResult = loginSchema.parse({ email, password });
 
-            const response = await fetch("http://localhost:4040/api/auth/signin", {
+            const response = await fetch("https://newsportal-juir.onrender.com/api/auth/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(validationResult)
