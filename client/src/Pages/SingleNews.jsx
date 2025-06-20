@@ -2,13 +2,13 @@ import Header from "../Components/Header";
 import {RelatableNews} from '../Components/ReletableNews'
 import img2 from "../assets/img2.png";
 import SubHeader from "../Components/Sub_header";
-import Footer from "../Components/Foter";
 import Commentsection from "../Components/Comments";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { storeRecentRead } from "../utils/newsAPI";
 import { ChartBarStacked, CircleUser, Share2 } from "lucide-react";
+import Footer from "../Components/Footer";
 
 export default function SingleNews() {
     const [news, setNews] = useState(null);

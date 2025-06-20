@@ -21,6 +21,7 @@ export const registration = asyncErrorHandler(async (req, res, next) => {
 
     newUser.save();
 
+
     res.status(201).json({
         message: "User created successfully ",
         newUser
@@ -38,7 +39,7 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 
     const isMatch = await comparePassword(password, user.password)
     if (!isMatch) {
-        throw new customError("user already exits", 400)
+        throw new customError("Invalid email password", 400)
     }
 
     const payload = {
