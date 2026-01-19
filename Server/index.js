@@ -29,8 +29,8 @@ app.use("/api/news", newsRoute)
 app.use("/api/category", categoryRoute)
 app.use('/api', recentReadRoutes);
 
-app.listen(PORT, () => {
-    DbConnection()
+app.listen(PORT, async() => {
+     await DbConnection()
     console.log(`Server running at PORT ${PORT}`)
 })
 

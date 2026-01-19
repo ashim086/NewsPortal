@@ -1,12 +1,12 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-export default function DbConnection() {
-    mongoose.connect(process.env.MONGODBURI)
-        .then(() => {
-            console.log("Mongodb connected Successfully")
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-
+export default async function DbConnection() {
+  await mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+      console.log("Mongodb connected Successfully");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }

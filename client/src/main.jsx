@@ -26,7 +26,6 @@ createRoot(document.getElementById('root')).render(
           <AuthorizationGuard >
             <HomePage />
           </AuthorizationGuard>} />
-
         {/* admin routes */}
         <Route path='/AdminPanel/users' element={
           <AuthorizationGuard allowedRoles={['admin']}>
