@@ -39,7 +39,7 @@ export default function CreatePost() {
   const GOOGLE_API_KEY = "AIzaSyDt2Msx0JRBNSfc_QZrB3pg-U3rxFZesdc";
 
   async function callGemini(userText) {
-   const prompt = `You are an expert news editor for a news portal.
+    const prompt = `You are an expert news editor for a news portal.
 
 I will give you the content description of a news article. 
 Your task is to determine the most suitable category for the news.
@@ -66,7 +66,6 @@ Rules:
 News content: ${userText}
 `;
 
-
     const body = {
       contents: [
         {
@@ -81,7 +80,7 @@ News content: ${userText}
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-      }
+      },
     );
 
     const data = await response.json();
@@ -143,11 +142,14 @@ News content: ${userText}
     if (imageFile) formData.append("news", imageFile);
 
     try {
-      const response = await fetch("http://localhost:4040/api/news/create", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
+      const response = await fetch(
+        "https://newsportal-juir.onrender.com/api/news/create",
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        },
+      );
 
       const result = await response.json();
 
