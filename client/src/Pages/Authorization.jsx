@@ -11,6 +11,7 @@ import {
   Chrome,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config/api";
 
 function Authorization() {
   const navigate = useNavigate();
@@ -34,16 +35,13 @@ function Authorization() {
   async function HandleRegistration(event) {
     event.preventDefault();
 
-    const response = await fetch(
-      "https://newsportal-juir.onrender.com/api/user/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, email, password, role }),
+    const response = await fetch(`${API_URL}/api/user/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ name, email, password, role }),
+    });
 
     const data = await response.json();
 
@@ -58,16 +56,13 @@ function Authorization() {
   async function HandleLogin(event) {
     event.preventDefault();
 
-    const response = await fetch(
-      "https://newsportal-juir.onrender.com/api/user/signin",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+    const response = await fetch(`${API_URL}/api/user/signin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ email, password }),
+    });
 
     const data = await response.json();
     // console.log("login response:", data);

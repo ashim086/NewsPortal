@@ -1,9 +1,11 @@
+import API_URL from "../config/api";
+
 export const storeRecentRead = async (newsId) => {
   const token = localStorage.getItem("token");
   if (!token) return;
 
   try {
-    await fetch("https://newsportal-juir.onrender.com/api/recent-reads", {
+    await fetch(`${API_URL}/api/recent-reads`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -18,16 +20,13 @@ export const storeRecentRead = async (newsId) => {
 
 export const getRecommendations = async () => {
   const token = localStorage.getItem("token");
-  const response = await fetch(
-    "https://newsportal-juir.onrender.com/api/recommendations",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+  const response = await fetch(`${API_URL}/api/recommendations`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
 
   if (response.ok) {
     const data = await response.json();

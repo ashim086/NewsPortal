@@ -4,6 +4,7 @@ import { ImagePlus, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import API_URL from "../../config/api";
 
 export default function CreatePost() {
   const [imagePreview, setImagePreview] = useState(null);
@@ -142,14 +143,11 @@ News content: ${userText}
     if (imageFile) formData.append("news", imageFile);
 
     try {
-      const response = await fetch(
-        "https://newsportal-juir.onrender.com/api/news/create",
-        {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        },
-      );
+      const response = await fetch(`${API_URL}/api/news/create`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
       const result = await response.json();
 

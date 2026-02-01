@@ -11,6 +11,7 @@ import {
   Chrome,
 } from "lucide-react";
 import { z } from "zod";
+import API_URL from "../config/api";
 
 // Enhanced validation schemas with more detailed messages
 const registrationSchema = z.object({
@@ -77,14 +78,11 @@ function Authorization() {
         role,
       });
 
-      const response = await fetch(
-        "https://newsportal-juir.onrender.com/api/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(validationResult),
-        },
-      );
+      const response = await fetch(`${API_URL}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validationResult),
+      });
 
       const data = await response.json();
 
@@ -121,14 +119,11 @@ function Authorization() {
     try {
       const validationResult = loginSchema.parse({ email, password });
 
-      const response = await fetch(
-        "https://newsportal-juir.onrender.com/api/auth/signin",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(validationResult),
-        },
-      );
+      const response = await fetch(`${API_URL}/api/auth/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validationResult),
+      });
 
       const data = await response.json();
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getRecommendations } from "../utils/newsAPI";
+import API_URL from "../config/api";
 
 export function RelatableNews() {
   const { newsID } = useParams();
@@ -21,9 +22,7 @@ export function RelatableNews() {
           recommendations = await getRecommendations();
         } else {
           // Fetch popular articles for guests
-          const res = await fetch(
-            "https://newsportal-juir.onrender.com/api/news/popularnews",
-          );
+          const res = await fetch(`${API_URL}/api/news/popularnews`);
           const data = await res.json();
           recommendations = data.popularArticle.slice(0, 5);
         }

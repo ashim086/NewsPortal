@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminPanelNavbar from "../../Components/AdminPanelNavbar";
 import { motion, AnimatePresence } from "framer-motion";
+import API_URL from "../../config/api";
 
 export default function AdminPanel() {
   const [users, setUsers] = useState([]);
@@ -13,16 +14,13 @@ export default function AdminPanel() {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        "https://newsportal-juir.onrender.com/api/admin/Users",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await fetch(`${API_URL}/api/admin/Users`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       const data = await res.json();
 

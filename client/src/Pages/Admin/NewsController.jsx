@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import AdminPanelNavbar from "../../Components/AdminPanelNavbar";
 import CategorySelect from "../../Components/CategorySelect";
 import { AnimatePresence, motion } from "framer-motion";
+import API_URL from "../../config/api";
 
 export default function NewsController() {
   const [news, setNews] = useState([]);
@@ -16,15 +17,12 @@ export default function NewsController() {
   const fetchNews = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        "https://newsportal-juir.onrender.com/api/news/all",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await fetch(`${API_URL}/api/news/all`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const data = await res.json();
       if (data.success) {
         setNews(data.news);
@@ -41,15 +39,12 @@ export default function NewsController() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        "https://newsportal-juir.onrender.com/api/category/all",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await fetch(`${API_URL}/api/category/all`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const data = await res.json();
       if (data.success && Array.isArray(data.data)) {
         setCategories(data.data);
@@ -66,17 +61,14 @@ export default function NewsController() {
   const handleUpdateStatus = async (newsId, newStatus) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `https://newsportal-juir.onrender.com/api/news/update-status/${newsId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ status: newStatus }),
+      const res = await fetch(`${API_URL}/api/news/update-status/${newsId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({ status: newStatus }),
+      });
       const data = await res.json();
       if (data.success) {
         setMessage(data.msg);
@@ -93,16 +85,13 @@ export default function NewsController() {
   const handleDeleteNews = async (newsId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `https://newsportal-juir.onrender.com/api/news/delete/${newsId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await fetch(`${API_URL}/api/news/delete/${newsId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const data = await res.json();
       if (data.success) {
         setMessage(data.msg);
@@ -119,17 +108,14 @@ export default function NewsController() {
   const handleUpdateCategory = async (newsId, categoryId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `https://newsportal-juir.onrender.com/api/news/update/${newsId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ categoryId }),
+      const res = await fetch(`${API_URL}/api/news/update/${newsId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({ categoryId }),
+      });
       const data = await res.json();
       if (data.success) {
         setMessage(data.msg);

@@ -1,6 +1,7 @@
 import { Pen, Sun, User, UserCog } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API_URL from "../config/api";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -35,15 +36,12 @@ export default function Header() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://newsportal-juir.onrender.com/api/user/profile",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/api/user/profile`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
 
       if (!response.ok) throw new Error("Failed to fetch profile");
 

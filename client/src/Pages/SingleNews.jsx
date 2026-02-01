@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { storeRecentRead } from "../utils/newsAPI";
 import { ChartBarStacked, CircleUser, Share2 } from "lucide-react";
 import Footer from "../Components/Footer";
+import API_URL from "../config/api";
 
 export default function SingleNews() {
   const [news, setNews] = useState(null);
@@ -17,9 +18,7 @@ export default function SingleNews() {
   useEffect(() => {
     const fetchSingleNews = async () => {
       try {
-        const res = await fetch(
-          `https://newsportal-juir.onrender.com/api/news/single/${newsID}`,
-        );
+        const res = await fetch(`${API_URL}/api/news/single/${newsID}`);
         const data = await res.json();
         setNews(data.news);
 

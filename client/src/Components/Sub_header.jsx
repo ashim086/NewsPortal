@@ -1,13 +1,12 @@
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import API_URL from "../config/api";
 
 export default function SubHeader() {
   const [category, setCategory] = useState([]);
   useEffect(() => {
     const fetchCateopry = async () => {
-      const data = await fetch(
-        "https://newsportal-juir.onrender.com/api/category/all",
-      );
+      const data = await fetch(`${API_URL}/api/category/all`);
       const categories = await data.json();
       // console.log(categories)
       setCategory(categories.data);
